@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3000
 
 # Define o comando de inicialização
-CMD ["npm", "start"]
+CMD ["node", "index.js"]
