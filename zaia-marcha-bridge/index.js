@@ -46,7 +46,31 @@ app.post('/generate-pix', async (req, res) => {
   }
 });
 
+// Endpoint de health check
+app.get('/', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    message: 'Servidor de ponte Zaia IA - Marcha Pay está rodando',
+    endpoints: {
+      health: 'GET /',
+      generatePix: 'POST /generate-pix'
+    }
+  });
+});
+
+// Endpoint de health check
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    environment: process.env.MARCHA_ENVIRONMENT || 'not-set'
+  });
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor de ponte rodando na porta ${PORT}`);
+  console.log(`Ambiente: ${process.env.MARCHA_ENVIRONMENT || 'não configurado'}`);
+  console.log(`Chave pública: ${process.env.MARCHA_PUBLIC_KEY ? 'configurada' : 'NÃO CONFIGURADA'}`);
+  console.log(`Chave secreta: ${process.env.MARCHA_SECRET_KEY ? 'configurada' : 'NÃO CONFIGURADA'}`);
 });
