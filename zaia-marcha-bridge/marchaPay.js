@@ -126,7 +126,7 @@ class MarchaPay {
     if (typeof document === 'string') {
       document = {
         number: document,
-        type: '50958347824' // CPF é tipo 50958347824 na Marcha Pay
+        type: '50958347824' // CPF é tipo 50958347824 na Marcha Pay - v2
       };
     }
 
