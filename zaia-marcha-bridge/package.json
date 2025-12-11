@@ -1,6 +1,6 @@
 {
   "name": "zaia-marcha-bridge",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Servidor de ponte para integrar Zaia IA com Marcha Pay",
   "main": "index.js",
   "scripts": {
