@@ -18,22 +18,69 @@ const marcha = new MarchaPay(
 
 app.post('/generate-pix', async (req, res) => {
   try {
-    const { amount, customer, items, expiresInDays } = req.body;
+    console.log('📥 Requisição recebida:', JSON.stringify(req.body, null, 2));
+    
+    let { amount, customer, items } = req.body;
 
-    if (!amount || !customer || !items) {
-      return res.status(400).json({ error: 'Dados insuficientes para gerar o PIX.' });
+    // Validações básicas
+    if (!amount || amount <= 0) {
+      console.log('❌ Erro: Amount inválido');
+      return res.status(400).json({ error: 'Amount é obrigatório e deve ser maior que 0' });
     }
+
+    if (!customer || !customer.name) {
+      console.log('❌ Erro: Dados do cliente inválidos');
+      return res.status(400).json({ error: 'Dados do cliente são obrigatórios (name)' });
+    }
+
+    if (!items || items.length === 0) {
+      console.log('❌ Erro: Items vazio');
+      return res.status(400).json({ error: 'Ao menos um item é obrigatório' });
+    }
+
+    // Normaliza o documento - pode vir como string ou objeto
+    let document = customer.document;
+    // Se já é um objeto, mantém; se é string, converte
+    if (typeof document === 'string') {
+      document = {
+        number: document,
+        type: '50958347824' // CPF
+      };
+    }
+
+    // Normaliza os items - aceita tanto 'price'/'unitPrice' quanto 'name'/'title'
+    const normalizedItems = items.map(item => ({
+      title: item.title || item.name || 'Item',
+      unitPrice: item.unitPrice || item.price || 0,
+      quantity: item.quantity || 1,
+      tangible: item.tangible !== undefined ? item.tangible : false
+    }));
+
+    console.log('✅ Dados validados');
+    console.log('📊 Amount:', amount);
+    console.log('👤 Customer:', customer.name);
+    console.log('📦 Items:', normalizedItems);
 
     const pixData = {
       amount: MarchaPay.toCents(amount),
-      customer,
-      items,
-      pix: {
-        expiresInDays: expiresInDays || 1,
+      customer: {
+        name: customer.name,
+        email: customer.email,
+        document: document,
+        phone: customer.phone
       },
+      items: normalizedItems,
+      pix: {
+        expiresInDays: 1
+      }
     };
 
+    console.log('🚀 Enviando para Marcha Pay:', JSON.stringify(pixData, null, 2));
+
     const resultado = await marcha.createPixTransaction(pixData);
+
+    console.log('✅ PIX criado com sucesso!');
+    console.log('Transaction ID:', resultado.id);
 
     res.json({
       qrCode: resultado.qrCode,
@@ -41,8 +88,12 @@ app.post('/generate-pix', async (req, res) => {
       transactionId: resultado.id,
     });
   } catch (error) {
-    console.error('Erro ao gerar PIX:', error);
-    res.status(500).json({ error: 'Não foi possível gerar o PIX.' });
+    console.error('❌ Erro ao gerar PIX:', error.message);
+    console.error('Stack:', error.stack);
+    res.status(500).json({ 
+      error: 'Não foi possível gerar o PIX.',
+      details: error.message 
+    });
   }
 });
 

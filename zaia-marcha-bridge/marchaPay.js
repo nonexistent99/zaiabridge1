@@ -113,6 +113,23 @@ class MarchaPay {
       throw new Error('Ao menos um item é obrigatório');
     }
 
+    // Normaliza os items para o formato esperado pela Marcha Pay
+    const normalizedItems = pixData.items.map(item => ({
+      title: item.title || item.name || 'Item',
+      unitPrice: item.unitPrice || item.price || 0,
+      quantity: item.quantity || 1,
+      tangible: item.tangible !== undefined ? item.tangible : false
+    }));
+
+    // Normaliza o documento se vier como string
+    let document = pixData.customer.document;
+    if (typeof document === 'string') {
+      document = {
+        number: document,
+        type: '50958347824' // CPF é tipo 50958347824 na Marcha Pay
+      };
+    }
+
     // Prepara os dados da transação
     const payload = {
       amount: pixData.amount,
@@ -121,10 +138,10 @@ class MarchaPay {
       customer: {
         name: pixData.customer.name,
         email: pixData.customer.email,
-        document: pixData.customer.document,
+        document: document,
         phone: pixData.customer.phone
       },
-      items: pixData.items,
+      items: normalizedItems,
       pix: {
         expiresInDays: pixData.pix?.expiresInDays || 1
       },
