@@ -50,10 +50,10 @@ app.post('/generate-pix', async (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Servidor de ponte rodando na porta ${PORT}`);
-    console.log(`Ambiente: ${process.env.NODE_ENV === 'production' ? 'production' : 'sandbox'}`);
-    console.log(`Chave pública: ${process.env.PUBLIC_KEY ? 'configurada' : 'NÃO CONFIGURADA'}`);
-    console.log(`Chave secreta: ${process.env.SECRET_KEY ? 'configurada' : 'NÃO CONFIGURADA'}`);
-});
+// ...
+const marchaPay = new MarchaPay(
+    process.env.MARCHA_PUBLIC_KEY, // <--- AGORA PROCURA POR MARCHA_PUBLIC_KEY
+    process.env.MARCHA_SECRET_KEY  // <--- AGORA PROCURA POR MARCHA_SECRET_KEY
+);
+// ...
+
