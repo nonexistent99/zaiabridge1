@@ -49,9 +49,3 @@ app.post('/generate-pix', async (req, res) => {
         res.status(500).json({ error: 'Erro interno ao processar a transação PIX.' });
     }
 });
-
-const marchaPay = new MarchaPay(
-    process.env.MARCHA_PUBLIC_KEY, // <--- DEVE SER ESTE NOME
-    process.env.MARCHA_SECRET_KEY  // <--- DEVE SER ESTE NOME
-)
-
