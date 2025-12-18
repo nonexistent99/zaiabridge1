@@ -48,4 +48,11 @@ app.post('/generate-pix', async (req, res) => {
         console.error('Erro ao gerar PIX:', error);
         res.status(500).json({ error: 'Erro interno ao processar a transação PIX.' });
     }
+// ...
+app.listen(PORT, () => {
+    console.log(`Servidor de ponte rodando na porta ${PORT}`);
+    console.log(`Ambiente: ${process.env.MARCHA_ENVIRONMENT || 'Não Definido'}`);
+    console.log(`Chave pública: ${process.env.MARCHA_PUBLIC_KEY ? 'configurada' : 'NÃO CONFIGURADA'}`);
+    console.log(`Chave secreta: ${process.env.MARCHA_SECRET_KEY ? 'configurada' : 'NÃO CONFIGURADA'}`);
 });
+
