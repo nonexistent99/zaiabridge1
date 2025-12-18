@@ -53,5 +53,5 @@ app.post('/generate-pix', async (req, res) => {
 const marchaPay = new MarchaPay(
     process.env.MARCHA_PUBLIC_KEY, // <--- DEVE SER ESTE NOME
     process.env.MARCHA_SECRET_KEY  // <--- DEVE SER ESTE NOME
-);
+)
 
