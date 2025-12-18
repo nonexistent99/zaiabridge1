@@ -27,45 +27,6 @@ app.get('/', (req, res) => {
     });
 });
 
-// Endpoint de health check
+// Health check
 app.get('/health', (req, res) => {
-    res.json({ status: 'ok' });
-});
-
-// Endpoint para gerar PIX
-app.post('/generate-pix', async (req, res) => {
-    try {
-        const marchaPay = new MarchaPay(
-            process.env.PUBLIC_KEY,
-            process.env.SECRET_KEY
-        );
-
-        const pixData = req.body;
-        const pixTransaction = await marchaPay.createPixTransaction(pixData);
-
-        res.json(pixTransaction);
-    } catch (error) {
-        console.error('Erro ao gerar PIX:', error);
-        res.status(500).json({
-            error: 'Erro interno ao processar a transação PIX.'
-        });
-    }
-}); // <<< FECHAMENTO QUE ESTAVA FALTANDO
-
-// Inicialização do servidor
-app.listen(PORT, () => {
-    console.log(`Servidor de ponte rodando na porta ${PORT}`);
-    console.log(
-        `Ambiente: ${process.env.MARCHA_ENVIRONMENT || 'Não Definido'}`
-    );
-    console.log(
-        `Chave pública: ${
-            process.env.MARCHA_PUBLIC_KEY ? 'configurada' : 'NÃO CONFIGURADA'
-        }`
-    );
-    console.log(
-        `Chave secreta: ${
-            process.env.MARCHA_SECRET_KEY ? 'configurada' : 'NÃO CONFIGURADA'
-        }`
-    );
-});
+    res.json({ sta
