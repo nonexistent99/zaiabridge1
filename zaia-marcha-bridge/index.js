@@ -54,5 +54,6 @@ app.listen(PORT, () => {
     console.log(`Ambiente: ${process.env.MARCHA_ENVIRONMENT || 'Não Definido'}`);
     console.log(`Chave pública: ${process.env.MARCHA_PUBLIC_KEY ? 'configurada' : 'NÃO CONFIGURADA'}`);
     console.log(`Chave secreta: ${process.env.MARCHA_SECRET_KEY ? 'configurada' : 'NÃO CONFIGURADA'}`);
+    
 });
 
