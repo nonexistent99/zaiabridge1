@@ -17,9 +17,12 @@ class MarchaPay {
   constructor(publicKey, secretKey, sandbox = false) {
     this.publicKey = publicKey;
     this.secretKey = secretKey;
-    this.baseUrl = production
-      ? 'https://api.marchabb.com/v1'
-      : 'https://api.marchabb.com/v1';
+const isProduction = process.env.MARCHA_ENVIRONMENT === 'production' && !sandbox;
+
+this.baseUrl = isProduction
+  ? 'https://api.marchabb.com/v1'
+  : 'https://sandbox-api.marchabb.com/v1';
+
   }
 
   /**
