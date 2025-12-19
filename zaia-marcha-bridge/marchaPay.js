@@ -18,7 +18,7 @@ class MarchaPay {
     this.publicKey = publicKey;
     this.secretKey = secretKey;
     this.baseUrl = production
-      ? 'https://sandbox-api.marchabb.com/v1'
+      ? 'https://api.marchabb.com/v1'
       : 'https://api.marchabb.com/v1';
   }
 
